@@ -15,7 +15,6 @@ const resolvers = {
 
     me: async (parent, args, context) => {
       console.log(context.user);
-      console.log(context.authorization);
       if (context.user) {
         return User.findOne({ _id: context.user._id }).populate('savedBooks');
       }
@@ -50,8 +49,6 @@ const resolvers = {
     saveBook: async (parent, arg, context) => {
       console.log(arg);
       if (context.user) {
-        // return User.findOne({ _id: context.user._id }).populate('savedBooks');
-
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $addToSet: { savedBooks: arg } },
@@ -65,8 +62,6 @@ const resolvers = {
 
     deleteBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        // return User.findOne({ _id: context.user._id }).populate('savedBooks');
-
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $pull: { savedBooks: { bookId } } },
